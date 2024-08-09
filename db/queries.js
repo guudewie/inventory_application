@@ -1,19 +1,35 @@
 const pool = require("./pool");
 
 // CREATE
-async function createCategory() {}
-async function createItem() {}
+async function createIndice() {}
+async function createSecurity() {}
+async function createSecurityType() {}
+
+async function createIndiceSecurity(securityId, indiceId) {}
 
 // READ
-async function getAllCategories() {}
-async function getAllItems() {}
+async function getAllIndices() {}
+async function getAllSecurities() {}
+async function getAllSecurityTypes() {}
 
-async function getAllItemsOfCategory() {}
+async function getSecurityType(id) {}
+async function getSecurity(id) {}
+async function getIndice(id) {}
+
+async function getSecuritiesOfIndice(indiceId) {}
+async function getIndicesOfSecurity(securityId) {}
+
+async function getIndicesWithSecurityType(securityTypeId) {}
+async function getSecuritiesWithSecurityType(securityTypeId) {}
 
 // DELETE
-async function deleteCategory() {}
-async function deleteItem() {}
+async function deleteIndice(id) {}
+async function deleteSecurity(id) {}
+async function deleteSecurityType(id) {}
+
+async function deleteIndiceSecurity(securityId, indiceId) {}
 
 // UPDATE
-async function updateItem() {}
-async function updateCategory() {}
+async function updateIndice(id, args) {}
+async function updateSecurity(id, args) {}
+async function updateSecurityType(id, args) {}
