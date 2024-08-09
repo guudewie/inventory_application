@@ -1,11 +1,11 @@
 const pool = require("./pool");
 
 // CREATE
-async function createIndice() {}
+async function createIndex() {}
 async function createSecurity() {}
 async function createSecurityType() {}
 
-async function createIndiceSecurity(securityId, indiceId) {}
+async function createIndexSecurity(securityId, indexId) {}
 
 // READ
 async function getAllIndices() {}
@@ -14,22 +14,22 @@ async function getAllSecurityTypes() {}
 
 async function getSecurityType(id) {}
 async function getSecurity(id) {}
-async function getIndice(id) {}
+async function getIndex(id) {}
 
-async function getSecuritiesOfIndice(indiceId) {}
+async function getSecuritiesOfIndex(indexId) {}
 async function getIndicesOfSecurity(securityId) {}
 
 async function getIndicesWithSecurityType(securityTypeId) {}
 async function getSecuritiesWithSecurityType(securityTypeId) {}
 
 // DELETE
-async function deleteIndice(id) {}
+async function deleteIndex(id) {}
 async function deleteSecurity(id) {}
 async function deleteSecurityType(id) {}
 
-async function deleteIndiceSecurity(securityId, indiceId) {}
+async function deleteIndexSecurity(securityId, indexId) {}
 
 // UPDATE
-async function updateIndice(id, args) {}
+async function updateIndex(id, args) {}
 async function updateSecurity(id, args) {}
 async function updateSecurityType(id, args) {}
