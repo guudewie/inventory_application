@@ -1,3 +1,4 @@
+require("dotenv").config();
 const pool = require("./pool");
 
 // CREATE
@@ -21,7 +22,7 @@ async function createSecurity(
 }
 async function createSecurityType(name, description) {
   await pool.query(
-    "INSERT INTO securityType (name, description) VALUES ($1, $2)",
+    "INSERT INTO security_type (name, description) VALUES ($1, $2)",
     [name, description],
   );
 }
@@ -37,16 +38,19 @@ async function createIndexSecurity(securityId, indexId) {
 async function getAllIndices() {
   const query = "SELECT * FROM indices";
   const { rows } = await pool.query(query);
+  console.table(rows);
   return rows;
 }
 async function getAllSecurities() {
   const query = "SELECT * FROM security";
   const { rows } = await pool.query(query);
+  console.table(rows);
   return rows;
 }
 async function getAllSecurityTypes() {
   const query = "SELECT * FROM security_type";
   const { rows } = await pool.query(query);
+  console.table(rows);
   return rows;
 }
 
@@ -123,3 +127,7 @@ async function updateSecurityType(id, name, description) {
   const query = `UPDATE security_indices SET (name, description) = ($2, $3) WHERE security_indices.id = $1`;
   await pool.query(query, [id, name, description]);
 }
+
+getAllIndices();
+getAllSecurities();
+getAllSecurityTypes();
