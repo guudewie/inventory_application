@@ -33,3 +33,5 @@ router.get("/:id/delete", security.getDeleteConfirmation);
 
 // DELETE /:id - Process security deletion
 router.delete("/:id", security.deleteSecurity);
+
+module.exports = router;

@@ -1,7 +1,6 @@
 require("dotenv").config();
 
 const express = require("express");
-const expressLayouts = require("express-ejs-layouts");
 const app = express();
 const path = require("node:path");
 
@@ -13,6 +12,8 @@ const securityTypesRouter = require("./routes/securityTypes");
 // set upt view engine ejs
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
+
+app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/index", indecesRouter);
