@@ -1,35 +1,35 @@
 const express = require("express");
 const router = express.Router();
-const indices = require("../controllers/indexController");
+const security = require("../controllers/securityController");
 
 /// GET SECURITY ///
 
 // GET / - Get all securities
-router.get("/", indices.getAllSecurities);
+router.get("/", security.getAllSecurities);
 
 // GET /:id - Get security detail
-router.get("/:id", indices.getSecurityDetail);
+router.get("/:id", security.getSecurityDetail);
 
 /// CREATE SECURITY ///
 
 // GET /new - Display create security form
-router.get("/:id/new", indices.getCreateForm);
+router.get("/:id/new", security.getCreateForm);
 
 // POST /new - Process security creattion
-router.post("/:id/new", indices.createSecurity);
+router.post("/:id/new", security.createSecurity);
 
 /// UPDATE SECURITY ///
 
 // GET /:id/edit - Display update form
-router.get("/:id/edit", indices.getUpdateForm);
+router.get("/:id/edit", security.getUpdateForm);
 
 // PUT /:id - Process security update
-router.put("/:id", indices.updateSecurity);
+router.put("/:id", security.updateSecurity);
 
 /// DELETE SECURITY ///
 
 // GET /:id/delete - Display delete confirmation
-router.get("/:id/delete", indices.getDeleteConfirmation);
+router.get("/:id/delete", security.getDeleteConfirmation);
 
 // DELETE /:id - Process security deletion
-router.delete("/:id", indices.deleteSecurity);
+router.delete("/:id", security.deleteSecurity);
