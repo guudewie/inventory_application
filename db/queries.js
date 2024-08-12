@@ -127,3 +127,25 @@ async function updateSecurityType(id, name, description) {
   const query = `UPDATE security_indices SET (name, description) = ($2, $3) WHERE security_indices.id = $1`;
   await pool.query(query, [id, name, description]);
 }
+
+module.exports = {
+  createIndex,
+  createSecurity,
+  createSecurityType,
+  createIndexSecurity,
+  getAllIndices,
+  getAllSecurities,
+  getAllSecurityTypes,
+  getSecurityType,
+  getSecurity,
+  getIndex,
+  getSecuritiesOfIndex,
+  getIndicesOfSecurity,
+  deleteIndex,
+  deleteSecurity,
+  deleteSecurityType,
+  deleteIndexSecurity,
+  updateIndex,
+  updateSecurity,
+  updateSecurityType,
+};

@@ -2,7 +2,9 @@ const asyncHandler = require("express-async-handler");
 const db = require("../db/queries");
 
 const getAllIndices = asyncHandler(async (req, res, next) => {
-  res.send("Endpoint not available");
+  const indices = await db.getAllIndices();
+  console.log(indices);
+  res.render("index/indicesAll", { indices: indices });
 });
 const getIndexDetail = asyncHandler(async (req, res, next) => {
   res.send("Endpoint not available");
