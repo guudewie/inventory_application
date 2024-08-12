@@ -1,5 +1,3 @@
 {
-    "plugins": ["prettier-plugin-sql"],
-    "sqlKeywordCase": "upper",
-    "sqlIdentifierCase": "lower"
+    "plugins": ["prettier-plugin-tailwindcss"]
 }

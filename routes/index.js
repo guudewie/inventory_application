@@ -6,7 +6,7 @@ const router = express.Router();
 router.get(
   "/",
   asyncHandler((req, res, next) => {
-    res.render("layout");
+    res.render("test");
   }),
 );
 module.exports = router;
