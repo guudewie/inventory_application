@@ -16,7 +16,7 @@ app.set("view engine", "ejs");
 app.use("/", indexRouter);
 app.use("/index", indecesRouter);
 app.use("/security", securitiesRouter);
-app.use("/securityType", securityTypesRouter);
+app.use("/security-type", securityTypesRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Listening on port ${PORT}!`));
