@@ -33,3 +33,5 @@ router.get("/:id/delete", indices.getDeleteConfirmation);
 
 // DELETE /:id - Process index deletion
 router.delete("/:id", indices.deleteIndex);
+
+module.exports = router;
