@@ -3,7 +3,7 @@ const db = require("../db/queries");
 
 const getAllSecurityTypes = asyncHandler(async (req, res, next) => {
   const securityTypes = await db.getAllSecurityTypes();
-  res.render("index/listAll", { result: securityTypes });
+  res.render("partials/listAll", { result: securityTypes });
 });
 const getSecurityTypeDetail = asyncHandler(async (req, res, next) => {
   res.send("Endpoint not available");

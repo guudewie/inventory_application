@@ -3,7 +3,7 @@ const db = require("../db/queries");
 
 const getAllSecurities = asyncHandler(async (req, res, next) => {
   const securities = await db.getAllSecurities();
-  res.render("index/listAll", { result: securities });
+  res.render("partials/listAll", { result: securities });
 });
 const getSecurityDetail = asyncHandler(async (req, res, next) => {
   res.send("Endpoint not available");

@@ -3,7 +3,7 @@ const db = require("../db/queries");
 
 const getAllIndices = asyncHandler(async (req, res, next) => {
   const indices = await db.getAllIndices();
-  res.render("index/listAll", { result: indices });
+  res.render("partials/listAll", { result: indices });
 });
 const getIndexDetail = asyncHandler(async (req, res, next) => {
   res.send("Endpoint not available");
