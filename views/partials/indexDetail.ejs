@@ -1,5 +1,5 @@
 <div class="flex flex-col gap-10">
-    <div>
+    <div class="flex flex-col gap-2">
         <div class="flex gap-2 items-center">
             <div class="text-2xl font-bold"><%=index.index_name%></div>
             <div class="bg-gray-800 text-white py-2 px-4 rounded-full text-xs"><%=index.index_ticker%></div>
@@ -7,12 +7,22 @@
         <div class="font-thin"><%=index.index_description%></div>
     </div>
     <div>
-        <div class="mb-2"><%=index.security_type_name%>s in this index:</div>
+        <div class="mb-2">
+            <%=index.security_type_name ? 
+            index.security_type_name :
+            "Securitie" %>s in this index:
+        </div>
         <% if (index.securities[0].id == null) { %>
-            <div class="bg-red-500 rounded-lg py-2 px-4 text-white">No securities added to this index yet!</div>
+            <div class="bg-red-500 rounded-lg py-2 px-4 text-white">
+                No securities added to this index yet!
+            </div>
         <% } else {%>
             <% console.log(index.securities) %>
             <%- include("listAll", {result : index.securities, type : "security"}) %>
         <% } %>
+    </div>
+    <div>
+        <div class="font-thin text-xs">Created on <%= index.created %></div>
+        <div class="font-thin text-xs">Last updated on <%= index.updated %></div>
     </div>
 </div>
