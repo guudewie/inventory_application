@@ -75,6 +75,8 @@ async function getIndexDetail(id) {
         indices.name AS index_name,
         indices.description AS index_description,
         indices.ticker_symbol AS index_ticker,
+        to_char(indices.created_at, 'DD Mon YYYY') AS created,
+        to_char(indices.updated_at, 'DD Mon YYYY') AS updated,
         security_type.id AS security_type_id,
         security_type.name AS security_type_name,
         security_type.description AS security_type_description,
