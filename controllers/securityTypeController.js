@@ -2,7 +2,8 @@ const asyncHandler = require("express-async-handler");
 const db = require("../db/queries");
 
 const getAllSecurityTypes = asyncHandler(async (req, res, next) => {
-  res.send("Endpoint not available");
+  const securityTypes = await db.getAllSecurityTypes();
+  res.render("index/listAll", { result: securityTypes });
 });
 const getSecurityTypeDetail = asyncHandler(async (req, res, next) => {
   res.send("Endpoint not available");
