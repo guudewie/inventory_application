@@ -1,0 +1,28 @@
+<div class="flex flex-col gap-10">
+    <div class="flex flex-col gap-2">
+        <div class="flex gap-2 items-center">
+            <div class="text-2xl font-bold"><%=security.security_name%></div>
+            <div class="bg-gray-800 text-white py-2 px-4 rounded-full text-xs"><%=index.index_ticker%></div>
+        </div>
+        <div class="font-thin"><%=index.index_description%></div>
+    </div>
+    <div>
+        <div class="mb-2">
+            <%=security.security_type_name ? 
+            security.security_type_name :
+            "Securitie" %>s in this index:
+        </div>
+        <% if (security.indices[0].id == null) { %>
+            <div class="bg-red-500 rounded-lg py-2 px-4 text-white">
+                No securities added to this index yet!
+            </div>
+        <% } else {%>
+            <% console.log(index.securities) %>
+            <%- include("listAll", {result : security.indices, type : "index"}) %>
+        <% } %>
+    </div>
+    <div>
+        <div class="font-thin text-xs">Created on <%= security.created %></div>
+        <div class="font-thin text-xs">Last updated on <%= security.updated %></div>
+    </div>
+</div>
