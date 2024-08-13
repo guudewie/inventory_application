@@ -8,7 +8,12 @@ const getAllSecurityTypes = asyncHandler(async (req, res, next) => {
   res.render("partials/listAll", { result: securityTypes, type: type });
 });
 const getSecurityTypeDetail = asyncHandler(async (req, res, next) => {
-  res.send("Endpoint not available");
+  const id = req.params.id;
+  const securityType = await db.getSecurityTypeDetail(id);
+  res.render("partials/securityTypeDetail", {
+    securityType: securityType[0],
+    type: type,
+  });
 });
 const getCreateForm = asyncHandler(async (req, res, next) => {
   res.send("Endpoint not available");
