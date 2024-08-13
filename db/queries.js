@@ -56,9 +56,42 @@ async function getAllSecurityTypes() {
   console.table(rows);
   return rows;
 }
-
-async function getSecurityType(id) {
-  const query = `SELECT * FROM security_type WHERE id = $1`;
+//USED
+async function getSecurityTypeDetail(id) {
+  const query = `
+    SELECT
+        security_type.id AS id,
+        security_type.name AS name,
+        security_type.description AS description,
+        to_char(security_type.created_at, 'DD Mon YYYY') AS created,
+        to_char(security_type.updated_at, 'DD Mon YYYY') AS updated,
+        ARRAY_AGG(
+            JSON_BUILD_OBJECT(
+                'id', indices.id,
+                'name', indices.name,
+                'description', indices.description,
+                'ticker_symbol', indices.ticker_symbol
+            )
+        ) AS indices,
+        ARRAY_AGG(
+            JSON_BUILD_OBJECT(
+                'id', security.id,
+                'name', security.name,
+                'description', security.description,
+                'ticker_symbol', security.ticker_symbol
+            )
+        ) AS security
+    FROM
+        security_type
+        FULL JOIN indices
+        ON security_type.id = indices.security_type_id
+        FULL JOIN "security"
+        ON security_type.id = "security".security_type_id
+    WHERE
+        security_type.id = $1
+    GROUP BY
+        security_type.id
+    `;
   const { rows } = await pool.query(query, [id]);
   return rows;
 }
@@ -193,7 +226,7 @@ module.exports = {
   getAllIndices,
   getAllSecurities,
   getAllSecurityTypes,
-  getSecurityType,
+  getSecurityTypeDetail,
   getSecurityDetail,
   getIndexDetail,
   getSecuritiesOfIndex,
