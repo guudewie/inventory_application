@@ -35,18 +35,21 @@ async function createIndexSecurity(securityId, indexId) {
 }
 
 // READ
+//USED
 async function getAllIndices() {
   const query = "SELECT * FROM indices";
   const { rows } = await pool.query(query);
   console.table(rows);
   return rows;
 }
+//USED
 async function getAllSecurities() {
   const query = "SELECT * FROM security";
   const { rows } = await pool.query(query);
   console.table(rows);
   return rows;
 }
+//USED
 async function getAllSecurityTypes() {
   const query = "SELECT * FROM security_type";
   const { rows } = await pool.query(query);
@@ -55,7 +58,7 @@ async function getAllSecurityTypes() {
 }
 
 async function getSecurityType(id) {
-  const query = `SELECT * FROM indices WHERE id = $1`;
+  const query = `SELECT * FROM security_type WHERE id = $1`;
   const { rows } = await pool.query(query, [id]);
   return rows;
 }
@@ -64,8 +67,35 @@ async function getSecurity(id) {
   const { rows } = await pool.query(query, [id]);
   return rows;
 }
-async function getIndex(id) {
-  const query = `SELECT * FROM security_type WHERE id = $1`;
+//USED
+async function getIndexDetail(id) {
+  const query = `
+    SELECT
+        indices.id AS index_id,
+        indices.name AS index_name,
+        indices.description AS index_description,
+        indices.ticker_symbol AS index_ticker,
+        security_type.id AS security_type_id,
+        security_type.name AS security_type_name,
+        security_type.description AS security_type_description,
+        ARRAY_AGG(
+            JSON_BUILD_OBJECT(
+                'id', security.id,
+                'name', security.name,
+                'description', security.description,
+                'ticker_symbol', security.ticker_symbol
+            )
+        ) AS securities
+    FROM
+        indices
+        LEFT JOIN security_type ON indices.security_type_id = security_type.id
+        LEFT JOIN security_indices ON indices.id = security_indices.indice_id
+        LEFT JOIN "security" ON security_indices.security_id = security.id
+    WHERE
+        indices.id = $1
+    GROUP BY
+        indices.id, security_type.id
+  `;
   const { rows } = await pool.query(query, [id]);
   return rows;
 }
@@ -138,7 +168,7 @@ module.exports = {
   getAllSecurityTypes,
   getSecurityType,
   getSecurity,
-  getIndex,
+  getIndexDetail,
   getSecuritiesOfIndex,
   getIndicesOfSecurity,
   deleteIndex,

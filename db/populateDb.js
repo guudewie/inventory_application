@@ -51,10 +51,10 @@ INSERT INTO security_type (name, description) VALUES
 ('ETF', 'Exchange Traded Fund');
 
 -- Inserting into indices
-INSERT INTO indices (name, description, ticker_symbol) VALUES
-('S&P 500', 'Standard & Poor''s 500 Index', 'SPX'),
-('Nasdaq Composite', 'Nasdaq Composite Index', 'IXIC'),
-('Dow Jones Industrial Average', 'Dow Jones Industrial Average Index', 'DJI');
+INSERT INTO indices (name, description, ticker_symbol, security_type_id) VALUES
+('S&P 500', 'Standard & Poor''s 500 Index', 'SPX', 1),
+('Nasdaq Composite', 'Nasdaq Composite Index', 'IXIC', 1),
+('Dow Jones Industrial Average', 'Dow Jones Industrial Average Index', 'DJI', 1);
 
 -- Inserting into security
 INSERT INTO security (name, description, security_type_id, ticker_symbol, market_cap) VALUES

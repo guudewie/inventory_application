@@ -6,7 +6,9 @@ const getAllIndices = asyncHandler(async (req, res, next) => {
   res.render("partials/listAll", { result: indices });
 });
 const getIndexDetail = asyncHandler(async (req, res, next) => {
-  res.send("Endpoint not available");
+  const id = req.params.id;
+  const index = await db.getIndexDetail(id);
+  res.render("partials/indexDetail", { index: index[0] });
 });
 const getCreateForm = asyncHandler(async (req, res, next) => {
   res.send("Endpoint not available");
