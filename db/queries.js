@@ -62,6 +62,7 @@ async function getSecurityType(id) {
   const { rows } = await pool.query(query, [id]);
   return rows;
 }
+//USED
 async function getSecurityDetail(id) {
   const query = `
       SELECT
@@ -117,7 +118,7 @@ async function getIndexDetail(id) {
         LEFT JOIN security_indices ON "security".id = security_indices.security_id
         LEFT JOIN indices ON security_indices.indice_id = indices.id
     WHERE
-        "security".id = 1
+        "security".id = $1
     GROUP BY
         "security".id, security_type.id
         `;
