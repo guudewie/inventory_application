@@ -63,7 +63,7 @@ async function getSecurityType(id) {
   return rows;
 }
 //USED
-async function getSecurityDetail(id) {
+async function getIndexDetail(id) {
   const query = `
       SELECT
           indices.id AS index_id,
@@ -72,9 +72,7 @@ async function getSecurityDetail(id) {
           indices.ticker_symbol AS index_ticker,
           to_char(indices.created_at, 'DD Mon YYYY') AS created,
           to_char(indices.updated_at, 'DD Mon YYYY') AS updated,
-          security_type.id AS security_type_id,
           security_type.name AS security_type_name,
-          security_type.description AS security_type_description,
           ARRAY_AGG(
               JSON_BUILD_OBJECT(
                   'id', security.id,
@@ -97,7 +95,7 @@ async function getSecurityDetail(id) {
   return rows;
 }
 //USED
-async function getIndexDetail(id) {
+async function getSecurityDetail(id) {
   const query = `
     SELECT
         "security".id AS security_id,
