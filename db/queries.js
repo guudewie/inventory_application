@@ -65,28 +65,34 @@ async function getSecurityTypeDetail(id) {
         security_type.description AS description,
         to_char(security_type.created_at, 'DD Mon YYYY') AS created,
         to_char(security_type.updated_at, 'DD Mon YYYY') AS updated,
-        ARRAY_AGG(
-            JSON_BUILD_OBJECT(
-                'id', indices.id,
-                'name', indices.name,
-                'description', indices.description,
-                'ticker_symbol', indices.ticker_symbol
+        (
+            SELECT ARRAY_AGG(
+                JSON_BUILD_OBJECT(
+                    'id', i.id,
+                    'name', i.name,
+                    'description', i.description,
+                    'ticker_symbol', i.ticker_symbol,
+                    'type', 'index'
+                )
             )
+            FROM indices i
+            WHERE i.security_type_id = security_type.id
         ) AS indices,
-        ARRAY_AGG(
-            JSON_BUILD_OBJECT(
-                'id', security.id,
-                'name', security.name,
-                'description', security.description,
-                'ticker_symbol', security.ticker_symbol
+        (
+            SELECT ARRAY_AGG(
+                JSON_BUILD_OBJECT(
+                    'id', s.id,
+                    'name', s.name,
+                    'description', s.description,
+                    'ticker_symbol', s.ticker_symbol,
+                    'type', 'security'
+                )
             )
+            FROM "security" s
+            WHERE s.security_type_id = security_type.id
         ) AS security
     FROM
         security_type
-        FULL JOIN indices
-        ON security_type.id = indices.security_type_id
-        FULL JOIN "security"
-        ON security_type.id = "security".security_type_id
     WHERE
         security_type.id = $1
     GROUP BY
