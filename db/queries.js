@@ -82,7 +82,7 @@ async function getIndexDetail(id) {
               )
           ) AS securities
       FROM
-          security
+          indices
           LEFT JOIN security_type ON indices.security_type_id = security_type.id
           LEFT JOIN security_indices ON indices.id = security_indices.indice_id
           LEFT JOIN "security" ON security_indices.security_id = security.id
@@ -102,6 +102,9 @@ async function getSecurityDetail(id) {
         "security".name AS security_name,
         "security".description AS security_description,
         security_type.name AS security_type_name,
+        "security".ticker_symbol AS security_ticker,
+        to_char("security".created_at, 'DD Mon YYYY') AS created,
+        to_char("security".updated_at, 'DD Mon YYYY') AS updated,
         ARRAY_AGG(
             JSON_BUILD_OBJECT(
                 'id', indices.id,
