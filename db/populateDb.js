@@ -107,7 +107,7 @@ EXECUTE FUNCTION update_timestamp();
 async function main() {
   console.log("seeding...");
   const client = new Client({
-    connectionString: process.env.DATABASE_PUBLIC_URL,
+    connectionString: process.env.DATABASE_LOCAL_URL,
   });
   await client.connect();
   console.log("connecting...");
