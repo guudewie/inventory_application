@@ -1,8 +1,8 @@
 <div class="container mx-auto">
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         <% for(let i in result) { %>
-            <a href="/index/<%= result[i].id %>" class="block">
-                <div class="flex flex-col bg-white rounded-lg shadow-md p-6 transition duration-300 ease-in-out transform hover:scale-105 h-full">
+            <a href="/<%= type %>/<%= result[i].id %>" class="block">
+                <div class="flex flex-col bg-white rounded-lg shadow-md hover:shadow-sm p-6 transition duration-300 ease-in-out transform h-full">
                     <h2 class="text-xl font-semibold text-gray-800 mb-2"><%= result[i].name %></h2>
                     <p class="text-gray-600 mb-4 flex-grow"><%= result[i].description %></p>
                     <% if(result[i].ticker_symbol) { %>
