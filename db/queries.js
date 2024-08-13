@@ -62,8 +62,36 @@ async function getSecurityType(id) {
   const { rows } = await pool.query(query, [id]);
   return rows;
 }
-async function getSecurity(id) {
-  const query = `SELECT * FROM security WHERE id = $1`;
+async function getSecurityDetail(id) {
+  const query = `
+      SELECT
+          indices.id AS index_id,
+          indices.name AS index_name,
+          indices.description AS index_description,
+          indices.ticker_symbol AS index_ticker,
+          to_char(indices.created_at, 'DD Mon YYYY') AS created,
+          to_char(indices.updated_at, 'DD Mon YYYY') AS updated,
+          security_type.id AS security_type_id,
+          security_type.name AS security_type_name,
+          security_type.description AS security_type_description,
+          ARRAY_AGG(
+              JSON_BUILD_OBJECT(
+                  'id', security.id,
+                  'name', security.name,
+                  'description', security.description,
+                  'ticker_symbol', security.ticker_symbol
+              )
+          ) AS securities
+      FROM
+          security
+          LEFT JOIN security_type ON indices.security_type_id = security_type.id
+          LEFT JOIN security_indices ON indices.id = security_indices.indice_id
+          LEFT JOIN "security" ON security_indices.security_id = security.id
+      WHERE
+          indices.id = $1
+      GROUP BY
+          indices.id, security_type.id
+    `;
   const { rows } = await pool.query(query, [id]);
   return rows;
 }
@@ -71,33 +99,28 @@ async function getSecurity(id) {
 async function getIndexDetail(id) {
   const query = `
     SELECT
-        indices.id AS index_id,
-        indices.name AS index_name,
-        indices.description AS index_description,
-        indices.ticker_symbol AS index_ticker,
-        to_char(indices.created_at, 'DD Mon YYYY') AS created,
-        to_char(indices.updated_at, 'DD Mon YYYY') AS updated,
-        security_type.id AS security_type_id,
+        "security".id AS security_id,
+        "security".name AS security_name,
+        "security".description AS security_description,
         security_type.name AS security_type_name,
-        security_type.description AS security_type_description,
         ARRAY_AGG(
             JSON_BUILD_OBJECT(
-                'id', security.id,
-                'name', security.name,
-                'description', security.description,
-                'ticker_symbol', security.ticker_symbol
+                'id', indices.id,
+                'name', indices.name,
+                'description', indices.description,
+                'ticker_symbol', indices.ticker_symbol
             )
-        ) AS securities
+        ) AS indices
     FROM
-        indices
-        LEFT JOIN security_type ON indices.security_type_id = security_type.id
-        LEFT JOIN security_indices ON indices.id = security_indices.indice_id
-        LEFT JOIN "security" ON security_indices.security_id = security.id
+        "security"
+        LEFT JOIN security_type ON "security".security_type_id = security_type.id
+        LEFT JOIN security_indices ON "security".id = security_indices.security_id
+        LEFT JOIN indices ON security_indices.indice_id = indices.id
     WHERE
-        indices.id = $1
+        "security".id = 1
     GROUP BY
-        indices.id, security_type.id
-  `;
+        "security".id, security_type.id
+        `;
   const { rows } = await pool.query(query, [id]);
   return rows;
 }
@@ -169,7 +192,7 @@ module.exports = {
   getAllSecurities,
   getAllSecurityTypes,
   getSecurityType,
-  getSecurity,
+  getSecurityDetail,
   getIndexDetail,
   getSecuritiesOfIndex,
   getIndicesOfSecurity,
