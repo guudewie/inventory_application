@@ -2,6 +2,14 @@ const express = require("express");
 const router = express.Router();
 const security = require("../controllers/securityController");
 
+/// CREATE SECURITY ///
+
+// GET /new - Display create security form
+router.get("/new", security.getCreateForm);
+
+// POST /new - Process security creattion
+router.post("/new", security.createSecurity);
+
 /// GET SECURITY ///
 
 // GET / - Get all securities
@@ -9,14 +17,6 @@ router.get("/", security.getAllSecurities);
 
 // GET /:id - Get security detail
 router.get("/:id", security.getSecurityDetail);
-
-/// CREATE SECURITY ///
-
-// GET /new - Display create security form
-router.get("/:id/new", security.getCreateForm);
-
-// POST /new - Process security creattion
-router.post("/:id/new", security.createSecurity);
 
 /// UPDATE SECURITY ///
 

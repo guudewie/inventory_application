@@ -2,6 +2,14 @@ const express = require("express");
 const router = express.Router();
 const indices = require("../controllers/indexController");
 
+/// CREATE INDICES ///
+
+// GET /new - Display create index form
+router.get("/new", indices.getCreateForm);
+
+// POST /new - Process index creattion
+router.post("/new", indices.createIndex);
+
 /// GET INDICES ///
 
 // GET / - Get all indices
@@ -9,14 +17,6 @@ router.get("/", indices.getAllIndices);
 
 // GET /:id - Get index detail
 router.get("/:id", indices.getIndexDetail);
-
-/// CREATE INDICES ///
-
-// GET /new - Display create index form
-router.get("/:id/new", indices.getCreateForm);
-
-// POST /new - Process index creattion
-router.post("/:id/new", indices.createIndex);
 
 /// UPDATE INDICES ///
 
