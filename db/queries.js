@@ -5,9 +5,13 @@ const pool = require("./pool");
 //USED
 async function createIndex(name, description, tickerSymbol, security_type_id) {
   const result = await pool.query(
-    "INSERT INTO indices (name, description, ticker_symbol, security_type_id) VALUES ($1, $2, $3, $4)",
+    `
+    INSERT INTO indices (name, description, ticker_symbol, security_type_id) 
+    VALUES ($1, $2, $3, $4)
+    RETURNING *`,
     [name, description, tickerSymbol, security_type_id],
   );
+  console.log("AWESOME", result);
   return result.rows[0].id;
 }
 async function createSecurity(
@@ -18,14 +22,14 @@ async function createSecurity(
   market_cap,
 ) {
   const result = await pool.query(
-    "INSERT INTO security (name, description, security_type_id, ticker_symbol, market_cap) VALUES ($1, $2, $3, $4, $5)",
+    "INSERT INTO security (name, description, security_type_id, ticker_symbol, market_cap) VALUES ($1, $2, $3, $4, $5) RETURNING *",
     [name, description, security_type_id, ticker_symbol, market_cap],
   );
   return result.rows[0].id;
 }
 async function createSecurityType(name, description) {
   const result = await pool.query(
-    "INSERT INTO security_type (name, description) VALUES ($1, $2)",
+    "INSERT INTO security_type (name, description) VALUES ($1, $2) RETURNING *",
     [name, description],
   );
   return result.rows[0].id;
@@ -33,7 +37,7 @@ async function createSecurityType(name, description) {
 
 async function createIndexSecurity(securityId, indexId) {
   const result = await pool.query(
-    "INSERT INTO security_indices (security_id, indice_id) VALUES ($1, $2)",
+    "INSERT INTO security_indices (security_id, indice_id) VALUES ($1, $2) RETURNING *",
     [securityId, indexId],
   );
   return result.rows[0].id;
