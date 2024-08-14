@@ -1,4 +1,5 @@
-<div class="container mx-auto">
+<div class="container mx-auto flex flex-col gap-5">
+    <div class="text-3xl font-thin"><%= type == "index" ? "Indeces" : type == "security" ? "Securities" : type == "security-type" ? "Security Types" : "Category Not Found" %></div>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         <% for(let i in result) { %>
             <a href="/<%= type %>/<%= result[i].id %>" class="block">
