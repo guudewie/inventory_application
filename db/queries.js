@@ -2,10 +2,10 @@ require("dotenv").config();
 const pool = require("./pool");
 
 // CREATE
-async function createIndex(name, description, tickerSymbol) {
+async function createIndex(name, description, tickerSymbol, security_type_id) {
   await pool.query(
-    "INSERT INTO indices (name, description, ticker_symbol) VALUES ($1, $2, $3)",
-    [name, description, tickerSymbol],
+    "INSERT INTO indices (name, description, ticker_symbol, security_type_id) VALUES ($1, $2, $3, $4)",
+    [name, description, tickerSymbol, security_type_id],
   );
 }
 async function createSecurity(
