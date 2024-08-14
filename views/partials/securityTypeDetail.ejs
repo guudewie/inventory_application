@@ -13,7 +13,7 @@
                 There are currently no securities or indices of type <%= securityType.name%>!
             </div>
             <% } else {%>
-            <%- include("listAll", {result : [...securityType.indices, ...securityType.security], type : "index"}) %>
+            <%- include("listAllDetail", {result : [...securityType.indices, ...securityType.security], type : "index"}) %>
         <% } %>
     </div>
     <div>
