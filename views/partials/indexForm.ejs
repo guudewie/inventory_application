@@ -26,10 +26,9 @@
                 </label>
                 <div class="relative">
                   <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 mb-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="securityType" name="securityType">
-                    <option>ETF</option>
-                    <option>VC Fund</option>
-                    <option>Stock</option>
-                    <option>Commodity</option>
+                    <% for (let i in securityTypes) { %>
+                        <option value="<%= securityTypes[i].id %>"><%= securityTypes[i].name %></option>
+                    <% } %>
                   </select>
                   <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                     <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
@@ -47,12 +46,9 @@
                     </button>
                     <div id="dropdown-content" class="hidden absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded shadow-lg">
                         <div class="py-1">
-                            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100" data-value="AAPL">Apple Inc.</a>
-                            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100" data-value="GOOGL">Alphabet Inc.</a>
-                            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100" data-value="MSFT">Microsoft Corporation</a>
-                            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100" data-value="AMZN">Amazon.com, Inc.</a>
-                            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100" data-value="FB">Meta Platforms, Inc.</a>
-                            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100" data-value="TSLA">Tesla, Inc.</a>
+                            <% for (let i in securities) { %>
+                            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100" data-value="<%= securities[i].id %>"><%= securities[i].name %></a>
+                            <% } %>
                         </div>
                     </div>
                 </div>
@@ -91,10 +87,10 @@
 
         if (tagName === 'A' && !selectedIds.includes(value)) {
             addSelection(value, text);
-            console.log("add")
-        } else {
+            console.log(value, "add")
+        } else if (tagName === 'A'){
             removeSelection(value)
-            console.log("remove")
+            console.log(value, "remove")
         }
         updateHiddenInput()
     });
@@ -132,8 +128,8 @@
             const dropdownItem = document.querySelector(`a[data-value="${value}"]`)
             dropdownItem.classList.remove("bg-gray-100")
             // remove id from id array
-            selectedIds.indexOf(value)
-            selectedIds.splice(value, 1)
+            const index = selectedIds.indexOf(value)
+            selectedIds.splice(index, 1)
         }
     }
 </script>
