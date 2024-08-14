@@ -1,0 +1,139 @@
+<div class="container mx-auto flex flex-col gap-5">
+    <div class="text-3xl font-thin">Create Index</div>
+    <form action="/index/new" method="post" class="w-full max-w-lg">
+        <div class="flex flex-wrap -mx-3 mb-6">
+            <div class="w-full md:w-2/3 px-3 mb-6 md:mb-0">
+                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="name">
+                  Name
+                </label>
+                <input class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="name" type="text" placeholder="XTracker BR Young Global Index" name="name">
+            </div>
+            <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="ticker">
+                  Ticker
+                </label>
+                <input onkeyup="this.value = this.value.toUpperCase();" class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="ticker" type="text" placeholder="XBRY" name="ticker">
+            </div>
+            <div class="w-full px-3 mb-6 md:mb-0">
+                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="description">
+                  Description
+                </label>
+                <textarea class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="description" placeholder="XTracker BR Young Global Index tracks emerging, high-growth companies worldwide." name="description"></textarea>
+            </div>
+            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="securityType">
+                  Security Type
+                </label>
+                <div class="relative">
+                  <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 mb-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="securityType" name="securityType">
+                    <option>ETF</option>
+                    <option>VC Fund</option>
+                    <option>Stock</option>
+                    <option>Commodity</option>
+                  </select>
+                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                  </div>
+                </div>
+            </div>
+            <div class="w-full px-3 mb-6 md:mb-0">
+                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="securities">
+                    Select Companies
+                </label>
+                <div class="relative">
+                    <button id="dropdown-btn" type="button" class="w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 flex justify-between items-center">
+                        <span id="dropdown-text">Select a security</span>
+                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                    </button>
+                    <div id="dropdown-content" class="hidden absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded shadow-lg">
+                        <div class="py-1">
+                            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100" data-value="AAPL">Apple Inc.</a>
+                            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100" data-value="GOOGL">Alphabet Inc.</a>
+                            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100" data-value="MSFT">Microsoft Corporation</a>
+                            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100" data-value="AMZN">Amazon.com, Inc.</a>
+                            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100" data-value="FB">Meta Platforms, Inc.</a>
+                            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100" data-value="TSLA">Tesla, Inc.</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="selected-items" class="w-full px-3 mt-4 flex flex-wrap gap-2"></div>
+        </div>
+        <input type="hidden" name="selectedSecurities" id="selectedSecurities">
+        <button type="submit" class="bg-blue-500 tracking-wide hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            Create Index
+        </button>
+    </form>
+</div>
+
+<script>
+    const dropdownBtn = document.getElementById('dropdown-btn');
+    const dropdownContent = document.getElementById('dropdown-content');
+    const dropdownText = document.getElementById('dropdown-text');
+    const selectedItems = document.getElementById('selected-items');
+    const selectedIds = []
+
+    dropdownBtn.addEventListener('click', function() {
+        dropdownContent.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', function(event) {
+        if (!dropdownBtn.contains(event.target) && !dropdownContent.contains(event.target)) {
+            dropdownContent.classList.add('hidden');
+        }
+    });
+
+    dropdownContent.addEventListener('click', function(event) {
+        const value = event.target.getAttribute('data-value');
+        const text = event.target.textContent;
+        const tagName = event.target.tagName
+        event.preventDefault();
+
+        if (tagName === 'A' && !selectedIds.includes(value)) {
+            addSelection(value, text);
+            console.log("add")
+        } else {
+            removeSelection(value)
+            console.log("remove")
+        }
+        updateHiddenInput()
+    });
+
+    function updateHiddenInput() {
+        const hiddenInput = document.getElementById('selectedSecurities');
+        hiddenInput.value = selectedIds.join(',');
+    }
+
+    function addSelection(value, text) {
+        if (!document.querySelector(`#selected-items [data-value="${value}"]`)) {
+            const chip = document.createElement('div');
+            chip.className = 'bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded flex items-center';
+            chip.setAttribute('data-value', value);
+            chip.innerHTML = `
+                ${text}
+                <button type="button" class="ml-2 text-blue-600 hover:text-blue-900" onclick="removeSelection('${value}')">
+                    &times;
+                </button>
+            `;
+            selectedItems.appendChild(chip);
+            selectedIds.push(value)
+
+            const dropdownItem = document.querySelector(`a[data-value="${value}"]`)
+            dropdownItem.classList.add("bg-gray-100")
+        }
+    }
+
+    function removeSelection(value) {
+        const chip = document.querySelector(`#selected-items [data-value="${value}"]`);
+        if (chip) {
+            // remove chip
+            chip.remove();
+            // remove dropdown item shadow
+            const dropdownItem = document.querySelector(`a[data-value="${value}"]`)
+            dropdownItem.classList.remove("bg-gray-100")
+            // remove id from id array
+            selectedIds.indexOf(value)
+            selectedIds.splice(value, 1)
+        }
+    }
+</script>
