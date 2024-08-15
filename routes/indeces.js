@@ -24,7 +24,7 @@ router.get("/:id", indices.getIndexDetail);
 router.get("/:id/edit", indices.getUpdateForm);
 
 // PUT /:id - Process index update
-router.put("/:id", indices.updateIndex);
+router.post("/:id/edit", indices.updateIndex);
 
 /// DELETE INDICES ///
 
