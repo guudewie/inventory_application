@@ -1,0 +1,38 @@
+<div class="moving-card relative flex flex-col mt-6 text-gray-700 bg-white shadow-md hover:shadow-xl bg-clip-border rounded-xl w-96 opacity-70 hover:opacity-100 focus::opacity-100 transition duration-300 ease-in-out transform">
+    <div
+      class="relative h-56 mx-4 -mt-6 overflow-hidden text-white shadow-lg bg-clip-border rounded-xl bg-blue-gray-500 shadow-blue-gray-500/40">
+      <img
+        src="https://images.pexels.com/photos/4451713/pexels-photo-4451713.jpeg"
+        alt="card-image" />
+    </div>
+    <div class="p-6 text-xs">
+      <div class="font-thin">
+        <%- new Date().toDateString() %>
+      </div>
+      <h5 class="block mb-3 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+        Market Meltdown: S&P 500 Plunges
+      </h5>
+      <p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
+        S&P 500 tumbles as recession fears intensify. Tech and financial stocks bear the brunt of the sell-off. Investors seek safe havens amid rising interest rates and geopolitical tensions.
+      </p>
+    </div>
+    <div class="p-6 pt-0">
+        <a href="https://www.cnbc.com/quotes/.SPX" target="_blank" class="inline-block">
+            <button
+              class="flex items-center gap-2 px-4 py-2 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-lg select-none disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none hover:bg-gray-400/10 active:bg-gray-900/20"
+              type="button">
+              Learn More
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                stroke="currentColor" class="w-4 h-4">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"></path>
+              </svg>
+            </button>
+          </a>
+    </div>
+  </div>  
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelector('.moving-card').classList.add('loaded');
+    });
+</script>
