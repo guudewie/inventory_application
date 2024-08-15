@@ -143,6 +143,22 @@ async function getIndexDetail(id) {
   return rows;
 }
 //USED
+
+async function getIndexInfoUpdate(id) {
+  const query = `
+    SELECT 
+      indices.*,
+      indices.security_type_id AS "securityType",
+      STRING_AGG(CAST(security_indices.security_id AS TEXT), ',') AS "selectedSecurities"
+    FROM indices
+    LEFT JOIN security_indices ON indices.id = security_indices.indice_id
+    WHERE indices.id = $1
+    GROUP BY indices.id
+  `;
+  const { rows } = await pool.query(query, [id]);
+  return rows;
+}
+
 async function getSecurityDetail(id) {
   const query = `
     SELECT
@@ -207,7 +223,7 @@ async function deleteIndexSecurity(securityId, indexId) {
 
 // UPDATE
 async function updateIndex(id, name, description, tickerSymbol) {
-  const query = `UPDATE indices SET (name, description, tickerSymbol) = ($2, $3, $4) WHERE indices.id = $1`;
+  const query = `UPDATE indices SET (name, description, ticker_symbol) = ($2, $3, $4) WHERE indices.id = $1`;
   await pool.query(query, [id, name, description, tickerSymbol]);
 }
 async function updateSecurity(
@@ -244,6 +260,7 @@ module.exports = {
   getSecurityTypeDetail,
   getSecurityDetail,
   getIndexDetail,
+  getIndexInfoUpdate,
   getSecuritiesOfIndex,
   getIndicesOfSecurity,
   deleteIndex,
