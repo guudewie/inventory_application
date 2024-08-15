@@ -28,15 +28,6 @@
     }
 }
 
-.moving-card {
-    transform: translateY(-40px);
-    transition: transform 1s ease-in-out;
-}
-
-.moving-card.loaded {
-  transform: translateY(0);
-}
-
 .backgroundTypography{
     background-attachment: fixed;
     background-position: 0 0;
