@@ -1,7 +1,7 @@
 <div class="container mx-auto flex flex-col gap-5 items-center lg:items-stretch">
-    <div class="text-3xl font-thin ">Create Index</div>
+    <div class="text-3xl font-thin "><%= title %></div>
     <div class="flex justify-between gap-4">
-        <form action="/index/new" method="post" class="w-full max-w-lg">
+        <form action="<%= action %>" method="post" class="w-full max-w-lg">
             <div class="flex flex-wrap -mx-3 mb-6">
                 <div class="w-full md:w-2/3 px-3 mb-6">
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="name">
@@ -68,7 +68,7 @@
             </div>
             <input type="hidden" name="selectedSecurities" id="selectedSecurities" value="<%= formData ? formData.selectedSecurities : '' %>">
             <button type="submit" class="bg-blue-500 tracking-wide hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                Create Index
+                <%= title %>
             </button>
         </form>
         <div class="justify-center items-center w-full hidden lg:flex self-center flex-1">
