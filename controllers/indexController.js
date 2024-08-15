@@ -19,16 +19,44 @@ const getCreateForm = asyncHandler(async (req, res, next) => {
   res.render("partials/indexForm", {
     securities: securities,
     securityTypes: securityTypes,
+    errors: {},
+    formData: {},
   });
 });
 const createIndex = [
-  body("name").trim().escape(),
-  body("description").trim().escape(),
-  body("ticker").trim().escape(),
+  body("name")
+    .trim()
+    .escape()
+    .isLength({ min: 1 })
+    .withMessage("Please fill in this field."),
+  body("description")
+    .trim()
+    .escape()
+    .isLength({ min: 1 })
+    .withMessage("Please fill in this field."),
+  body("ticker")
+    .trim()
+    .escape()
+    .isLength({ min: 1 })
+    .withMessage("Please fill in this field."),
   asyncHandler(async (req, res, next) => {
     const { name, ticker, description, selectedSecurities } = req.body;
     const securityTypeId = parseInt(req.body.securityType);
     const securities = selectedSecurities.split(",");
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      const securities = await db.getAllSecurities();
+      const securityTypes = await db.getAllSecurityTypes();
+      console.log(req.body);
+
+      return res.status(400).render("partials/indexForm", {
+        securities: securities,
+        securityTypes: securityTypes,
+        errors: errors.mapped(),
+        formData: req.body,
+      });
+    }
 
     const newIndexId = await db.createIndex(
       name,
