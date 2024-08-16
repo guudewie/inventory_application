@@ -202,6 +202,12 @@ async function getSecurityTicker() {
   const { rows } = await pool.query(query);
   return rows;
 }
+//USED
+async function getIndexTicker() {
+  const query = `SELECT indice.ticker_symbol FROM indice`;
+  const { rows } = await pool.query(query);
+  return rows;
+}
 
 // DELETE
 async function deleteIndex(id) {
@@ -266,6 +272,7 @@ module.exports = {
   getSecuritiesOfIndex,
   getIndicesOfSecurity,
   getSecurityTicker,
+  getIndexTicker,
   deleteIndex,
   deleteSecurity,
   deleteSecurityType,

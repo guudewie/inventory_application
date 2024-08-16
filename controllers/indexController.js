@@ -40,7 +40,15 @@ const createIndex = [
     .trim()
     .escape()
     .isLength({ min: 1 })
-    .withMessage("Please fill in this field."),
+    .withMessage("Please fill in this field.")
+    .custom(async (value) => {
+      const result = await db.getIndexTicker();
+      const tickerArray = result.map((ticker) => ticker.ticker_symbol);
+      if (tickerArray.includes(value)) {
+        throw new Error("Ticker is not unique");
+      }
+    })
+    .withMessage("Ticker Symbol has already been taken."),
   asyncHandler(async (req, res, next) => {
     const { name, ticker_symbol, description, selectedSecurities } = req.body;
     const securityTypeId = parseInt(req.body.securityType);
@@ -102,7 +110,19 @@ const updateIndex = [
   body("ticker_symbol")
     .trim()
     .notEmpty()
-    .withMessage("Please fill in this field."),
+    .withMessage("Please fill in this field.")
+    .custom(async (value, { req }) => {
+      const currTicker = await db.getIndexDetail(req.params.id);
+      if (value == currTicker[0].index_ticker) return;
+
+      const result = await db.getIndexTicker();
+      const tickerArray = result.map((ticker) => ticker.ticker_symbol);
+
+      if (tickerArray.includes(value)) {
+        throw new Error("Ticker is not unique");
+      }
+    })
+    .withMessage("Ticker Symbol has already been taken."),
   asyncHandler(async (req, res, next) => {
     const indexId = req.params.id;
     const { name, ticker_symbol, description, selectedSecurities } = req.body;
