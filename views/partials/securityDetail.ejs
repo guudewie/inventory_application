@@ -34,7 +34,6 @@
                 No securities added to this index yet!
             </div>
         <% } else {%>
-            <% console.log(security) %>
             <%- include("listAllDetail", {result : security.indices, type : "index"}) %>
         <% } %>
     </div>

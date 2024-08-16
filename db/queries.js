@@ -13,16 +13,16 @@ async function createIndex(name, description, tickerSymbol, security_type_id) {
   );
   return result.rows[0].id;
 }
+// USED
 async function createSecurity(
   name,
   description,
   security_type_id,
   ticker_symbol,
-  market_cap,
 ) {
   const result = await pool.query(
-    "INSERT INTO security (name, description, security_type_id, ticker_symbol, market_cap) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-    [name, description, security_type_id, ticker_symbol, market_cap],
+    "INSERT INTO security (name, description, security_type_id, ticker_symbol) VALUES ($1, $2, $3, $4) RETURNING *",
+    [name, description, security_type_id, ticker_symbol],
   );
   return result.rows[0].id;
 }
@@ -139,7 +139,6 @@ async function getIndexDetail(id) {
   return rows;
 }
 //USED
-
 async function getIndexInfoUpdate(id) {
   const query = `
     SELECT 
@@ -154,7 +153,7 @@ async function getIndexInfoUpdate(id) {
   const { rows } = await pool.query(query, [id]);
   return rows;
 }
-
+//USED
 async function getSecurityDetail(id) {
   const query = `
     SELECT
@@ -195,6 +194,12 @@ async function getSecuritiesOfIndex(indexId) {
 async function getIndicesOfSecurity(securityId) {
   const query = `SELECT * FROM security_indices LEFT JOIN indice ON security_indices.indice_id = indice.id WHERE security_indices.security_id = $1`;
   const { rows } = await pool.query(query, [securityId]);
+  return rows;
+}
+//USED
+async function getSecurityTicker() {
+  const query = `SELECT security.ticker_symbol FROM security`;
+  const { rows } = await pool.query(query);
   return rows;
 }
 
@@ -260,6 +265,7 @@ module.exports = {
   getIndexInfoUpdate,
   getSecuritiesOfIndex,
   getIndicesOfSecurity,
+  getSecurityTicker,
   deleteIndex,
   deleteSecurity,
   deleteSecurityType,
