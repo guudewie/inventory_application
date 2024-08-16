@@ -11,7 +11,6 @@ async function createIndex(name, description, tickerSymbol, security_type_id) {
     RETURNING *`,
     [name, description, tickerSymbol, security_type_id],
   );
-  console.log("AWESOME", result);
   return result.rows[0].id;
 }
 async function createSecurity(
@@ -48,21 +47,18 @@ async function createIndexSecurity(securityId, indexId) {
 async function getAllIndices() {
   const query = "SELECT * FROM indices";
   const { rows } = await pool.query(query);
-  console.table(rows);
   return rows;
 }
 //USED
 async function getAllSecurities() {
   const query = "SELECT * FROM security";
   const { rows } = await pool.query(query);
-  console.table(rows);
   return rows;
 }
 //USED
 async function getAllSecurityTypes() {
   const query = "SELECT * FROM security_type";
   const { rows } = await pool.query(query);
-  console.table(rows);
   return rows;
 }
 //USED
@@ -190,9 +186,9 @@ async function getSecurityDetail(id) {
   const { rows } = await pool.query(query, [id]);
   return rows;
 }
-
+// USED
 async function getSecuritiesOfIndex(indexId) {
-  const query = `SELECT * FROM security_indices LEFT JOIN security ON security_indices.security_id = security.id WHERE security_indices.indice_id = $1`;
+  const query = `SELECT * FROM security_indices WHERE security_indices.indice_id = $1`;
   const { rows } = await pool.query(query, [indexId]);
   return rows;
 }
@@ -215,13 +211,14 @@ async function deleteSecurityType(id) {
   const query = `DELETE FROM security_type WHERE id = $1`;
   await pool.query(query, [id]);
 }
-
+// USED
 async function deleteIndexSecurity(securityId, indexId) {
   const query = `DELETE FROM security_indices WHERE security_id = $1 AND indice_id = $2`;
   await pool.query(query, [securityId, indexId]);
 }
 
 // UPDATE
+// USED
 async function updateIndex(id, name, description, tickerSymbol) {
   const query = `UPDATE indices SET (name, description, ticker_symbol) = ($2, $3, $4) WHERE indices.id = $1`;
   await pool.query(query, [id, name, description, tickerSymbol]);
