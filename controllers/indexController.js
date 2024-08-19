@@ -111,22 +111,25 @@ const updateIndex = [
     .trim()
     .notEmpty()
     .withMessage("Please fill in this field.")
-    .custom(async (value, { req }) => {
-      const currTicker = await db.getIndexDetail(req.params.id);
-      if (value == currTicker[0].index_ticker) return;
+    .custom(
+      asyncHandler(async (value, { req }) => {
+        const currTicker = await db.getIndexDetail(req.params.id);
+        if (value == currTicker[0].index_ticker) return true;
 
-      const result = await db.getIndexTicker();
-      const tickerArray = result.map((ticker) => ticker.ticker_symbol);
+        const result = await db.getIndexTicker();
+        const tickerArray = result.map((ticker) => ticker.ticker_symbol);
 
-      if (tickerArray.includes(value)) {
-        throw new Error("Ticker is not unique");
-      }
-    })
+        if (tickerArray.includes(value)) {
+          throw new Error("Ticker is not unique");
+        }
+      }),
+    )
     .withMessage("Ticker Symbol has already been taken."),
   asyncHandler(async (req, res, next) => {
     const indexId = req.params.id;
     const { name, ticker_symbol, description, selectedSecurities } = req.body;
-    const securities = selectedSecurities.split(",");
+    const securities =
+      selectedSecurities == "" ? [] : selectedSecurities.split(",");
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
