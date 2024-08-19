@@ -106,6 +106,14 @@ async function getSecurityTypeDetail(id) {
   const { rows } = await pool.query(query, [id]);
   return rows;
 }
+
+//USED
+async function getSecurityTypeInfoUpdate(id) {
+  const query = "SELECT * FROM security_type WHERE id=$1";
+  const { rows } = await pool.query(query, [id]);
+  return rows;
+}
+
 //USED
 async function getIndexDetail(id) {
   const query = `
@@ -264,6 +272,7 @@ async function updateIndex(
     security_type_id,
   ]);
 }
+//USED
 async function updateSecurity(
   id,
   name,
@@ -280,8 +289,9 @@ async function updateSecurity(
     security_type_id,
   ]);
 }
+//USED
 async function updateSecurityType(id, name, description) {
-  const query = `UPDATE security_indices SET (name, description) = ($2, $3) WHERE security_indices.id = $1`;
+  const query = `UPDATE security_type SET (name, description) = ($2, $3) WHERE security_type.id = $1`;
   await pool.query(query, [id, name, description]);
 }
 
@@ -294,6 +304,7 @@ module.exports = {
   getAllSecurities,
   getAllSecurityTypes,
   getSecurityTypeDetail,
+  getSecurityTypeInfoUpdate,
   getSecurityDetail,
   getSecurityInfoUpdate,
   getIndexDetail,

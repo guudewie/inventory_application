@@ -24,7 +24,7 @@ router.get("/:id", securityType.getSecurityTypeDetail);
 router.get("/:id/edit", securityType.getUpdateForm);
 
 // PUT /:id - Process security type update
-router.put("/:id", securityType.updateSecurityType);
+router.post("/:id/edit", securityType.updateSecurityType);
 
 /// DELETE SECURITY TYPE ///
 
