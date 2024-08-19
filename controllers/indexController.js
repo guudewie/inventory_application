@@ -50,8 +50,13 @@ const createIndex = [
     })
     .withMessage("Ticker Symbol has already been taken."),
   asyncHandler(async (req, res, next) => {
-    const { name, ticker_symbol, description, selectedSecurities } = req.body;
-    const securityTypeId = parseInt(req.body.securityType);
+    const {
+      name,
+      ticker_symbol,
+      description,
+      selectedSecurities,
+      securityType,
+    } = req.body;
     const securities = selectedSecurities.split(",");
     const errors = validationResult(req);
 
@@ -73,7 +78,7 @@ const createIndex = [
       name,
       description,
       ticker_symbol,
-      securityTypeId,
+      securityType,
     );
     console.log(newIndexId);
     if (securities.length) {

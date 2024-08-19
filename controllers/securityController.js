@@ -48,8 +48,7 @@ const createSecurity = [
     })
     .withMessage("Ticker Symbol has already been taken."),
   asyncHandler(async (req, res, next) => {
-    const { name, ticker_symbol, description } = req.body;
-    const securityTypeId = parseInt(req.body.securityType);
+    const { name, ticker_symbol, description, securityType } = req.body;
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -67,7 +66,7 @@ const createSecurity = [
     const newSecurityId = await db.createSecurity(
       name,
       description,
-      securityTypeId,
+      securityType,
       ticker_symbol,
     );
 
