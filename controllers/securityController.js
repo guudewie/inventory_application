@@ -114,7 +114,7 @@ const updateSecurity = [
     .withMessage("Ticker Symbol has already been taken."),
   asyncHandler(async (req, res, next) => {
     const id = req.params.id;
-    const { name, ticker_symbol, description } = req.body;
+    const { name, ticker_symbol, description, securityType } = req.body;
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -130,7 +130,7 @@ const updateSecurity = [
     }
 
     // update index
-    await db.updateSecurity(id, name, description, ticker_symbol);
+    await db.updateSecurity(id, name, description, ticker_symbol, securityType);
 
     res.redirect(`/security/${id}`);
   }),

@@ -127,7 +127,13 @@ const updateIndex = [
     .withMessage("Ticker Symbol has already been taken."),
   asyncHandler(async (req, res, next) => {
     const indexId = req.params.id;
-    const { name, ticker_symbol, description, selectedSecurities } = req.body;
+    const {
+      name,
+      ticker_symbol,
+      description,
+      selectedSecurities,
+      securityType,
+    } = req.body;
     const securities =
       selectedSecurities == "" ? [] : selectedSecurities.split(",");
     const errors = validationResult(req);
@@ -147,7 +153,13 @@ const updateIndex = [
     }
 
     // update index
-    await db.updateIndex(indexId, name, description, ticker_symbol);
+    await db.updateIndex(
+      indexId,
+      name,
+      description,
+      ticker_symbol,
+      securityType,
+    );
 
     // update index security relations
     const securitiesOfIndex = await db.getSecuritiesOfIndex(indexId);

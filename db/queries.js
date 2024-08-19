@@ -242,13 +242,37 @@ async function deleteIndexSecurity(securityId, indexId) {
 
 // UPDATE
 // USED
-async function updateIndex(id, name, description, tickerSymbol) {
-  const query = `UPDATE indices SET (name, description, ticker_symbol) = ($2, $3, $4) WHERE indices.id = $1`;
-  await pool.query(query, [id, name, description, tickerSymbol]);
+async function updateIndex(
+  id,
+  name,
+  description,
+  tickerSymbol,
+  security_type_id,
+) {
+  const query = `UPDATE indices SET (name, description, ticker_symbol, security_type_id) = ($2, $3, $4, $5) WHERE indices.id = $1`;
+  await pool.query(query, [
+    id,
+    name,
+    description,
+    tickerSymbol,
+    security_type_id,
+  ]);
 }
-async function updateSecurity(id, name, description, ticker_symbol) {
-  const query = `UPDATE security SET (name, description, ticker_symbol) = ($2, $3, $4) WHERE security.id = $1`;
-  await pool.query(query, [id, name, description, ticker_symbol]);
+async function updateSecurity(
+  id,
+  name,
+  description,
+  ticker_symbol,
+  security_type_id,
+) {
+  const query = `UPDATE security SET (name, description, ticker_symbol, security_type_id) = ($2, $3, $4, $5) WHERE security.id = $1`;
+  await pool.query(query, [
+    id,
+    name,
+    description,
+    ticker_symbol,
+    security_type_id,
+  ]);
 }
 async function updateSecurityType(id, name, description) {
   const query = `UPDATE security_indices SET (name, description) = ($2, $3) WHERE security_indices.id = $1`;
