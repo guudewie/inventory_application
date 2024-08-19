@@ -185,6 +185,18 @@ async function getSecurityDetail(id) {
   const { rows } = await pool.query(query, [id]);
   return rows;
 }
+//USED
+async function getSecurityInfoUpdate(id) {
+  const query = `
+    SELECT 
+      security.*,
+      security.security_type_id AS "securityType"
+    FROM security
+    WHERE security.id = $1
+  `;
+  const { rows } = await pool.query(query, [id]);
+  return rows;
+}
 // USED
 async function getSecuritiesOfIndex(indexId) {
   const query = `SELECT * FROM security_indices WHERE security_indices.indice_id = $1`;
@@ -234,23 +246,9 @@ async function updateIndex(id, name, description, tickerSymbol) {
   const query = `UPDATE indices SET (name, description, ticker_symbol) = ($2, $3, $4) WHERE indices.id = $1`;
   await pool.query(query, [id, name, description, tickerSymbol]);
 }
-async function updateSecurity(
-  id,
-  name,
-  description,
-  security_type_id,
-  ticker_symbol,
-  market_cap,
-) {
-  const query = `UPDATE security SET (id, name, description, security_type_id, ticker_symbol, market_cap) = ($2, $3, $4, $5, $6) WHERE security.id = $1`;
-  await pool.query(query, [
-    id,
-    name,
-    description,
-    security_type_id,
-    ticker_symbol,
-    market_cap,
-  ]);
+async function updateSecurity(id, name, description, ticker_symbol) {
+  const query = `UPDATE security SET (name, description, ticker_symbol) = ($2, $3, $4) WHERE security.id = $1`;
+  await pool.query(query, [id, name, description, ticker_symbol]);
 }
 async function updateSecurityType(id, name, description) {
   const query = `UPDATE security_indices SET (name, description) = ($2, $3) WHERE security_indices.id = $1`;
@@ -267,6 +265,7 @@ module.exports = {
   getAllSecurityTypes,
   getSecurityTypeDetail,
   getSecurityDetail,
+  getSecurityInfoUpdate,
   getIndexDetail,
   getIndexInfoUpdate,
   getSecuritiesOfIndex,

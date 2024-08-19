@@ -24,7 +24,7 @@ router.get("/:id", security.getSecurityDetail);
 router.get("/:id/edit", security.getUpdateForm);
 
 // PUT /:id - Process security update
-router.put("/:id", security.updateSecurity);
+router.post("/:id/edit", security.updateSecurity);
 
 /// DELETE SECURITY ///
 

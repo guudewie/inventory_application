@@ -75,11 +75,67 @@ const createSecurity = [
   }),
 ];
 const getUpdateForm = asyncHandler(async (req, res, next) => {
-  res.send("Endpoint not available");
+  const id = req.params.id;
+  const security = await db.getSecurityInfoUpdate(id);
+  const securityTypes = await db.getAllSecurityTypes();
+
+  res.render("partials/securityForm", {
+    title: "Update Security",
+    action: `/security/${id}/edit`,
+    securityTypes: securityTypes,
+    errors: {},
+    formData: { ...security[0] },
+  });
 });
-const updateSecurity = asyncHandler(async (req, res, next) => {
-  res.send("Endpoint not available");
-});
+const updateSecurity = [
+  body("name")
+    .trim()
+    .isLength({ min: 1 })
+    .withMessage("Please fill in this field."),
+  body("description")
+    .trim()
+    .isLength({ min: 1 })
+    .withMessage("Please fill in this field."),
+  body("ticker_symbol")
+    .trim()
+    .isLength({ min: 1 })
+    .withMessage("Please fill in this field.")
+    .custom(async (value, { req }) => {
+      const currTicker = await db.getSecurityDetail(req.params.id);
+      if (value == currTicker[0].security_ticker) return true;
+
+      const result = await db.getSecurityTicker();
+      const tickerArray = result.map((ticker) => ticker.ticker_symbol);
+
+      if (tickerArray.includes(value)) {
+        throw new Error("Ticker is not unique");
+      }
+    })
+    .withMessage("Ticker Symbol has already been taken."),
+  asyncHandler(async (req, res, next) => {
+    const id = req.params.id;
+    const { name, ticker_symbol, description } = req.body;
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      const securityTypes = await db.getAllSecurityTypes();
+
+      return res.status(400).render("partials/securityForm", {
+        title: "Update Security",
+        action: `/security/${id}/edit`,
+        securityTypes: securityTypes,
+        errors: errors.mapped(),
+        formData: req.body,
+      });
+    }
+
+    // update index
+    await db.updateSecurity(id, name, description, ticker_symbol);
+
+    res.redirect(`/security/${id}`);
+  }),
+];
+
 const getDeleteConfirmation = asyncHandler(async (req, res, next) => {
   res.send("Endpoint not available");
 });
