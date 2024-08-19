@@ -220,6 +220,12 @@ async function getIndexTicker() {
   const { rows } = await pool.query(query);
   return rows;
 }
+//USED
+async function getSecurityTypeName() {
+  const query = `SELECT security_type.name FROM security_type`;
+  const { rows } = await pool.query(query);
+  return rows;
+}
 
 // DELETE
 async function deleteIndex(id) {
@@ -296,6 +302,7 @@ module.exports = {
   getIndicesOfSecurity,
   getSecurityTicker,
   getIndexTicker,
+  getSecurityTypeName,
   deleteIndex,
   deleteSecurity,
   deleteSecurityType,
