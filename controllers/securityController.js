@@ -26,25 +26,23 @@ const getCreateForm = asyncHandler(async (req, res, next) => {
 const createSecurity = [
   body("name")
     .trim()
-    .escape()
     .isLength({ min: 1 })
     .withMessage("Please fill in this field."),
   body("description")
     .trim()
-    .escape()
     .isLength({ min: 1 })
     .withMessage("Please fill in this field."),
   body("ticker_symbol")
     .trim()
-    .escape()
     .isLength({ min: 1 })
     .withMessage("Please fill in this field.")
     .custom(async (value) => {
       const result = await db.getSecurityTicker();
-      const tickerArray = result.map((ticker) => ticker.ticker_symbol);
-      if (tickerArray.includes(value)) {
-        throw new Error("Ticker is not unique");
-      }
+      return result.forEach((row) => {
+        if (row.ticker_symbol == value) {
+          throw new Error("Ticker is not unique");
+        }
+      });
     })
     .withMessage("Ticker Symbol has already been taken."),
   asyncHandler(async (req, res, next) => {
@@ -104,11 +102,11 @@ const updateSecurity = [
       if (value == currTicker[0].security_ticker) return true;
 
       const result = await db.getSecurityTicker();
-      const tickerArray = result.map((ticker) => ticker.ticker_symbol);
-
-      if (tickerArray.includes(value)) {
-        throw new Error("Ticker is not unique");
-      }
+      return result.forEach((row) => {
+        if (row.ticker_symbol == value) {
+          throw new Error("Ticker is not unique");
+        }
+      });
     })
     .withMessage("Ticker Symbol has already been taken."),
   asyncHandler(async (req, res, next) => {
