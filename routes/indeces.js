@@ -23,15 +23,14 @@ router.get("/:id", indices.getIndexDetail);
 // GET /:id/edit - Display update form
 router.get("/:id/edit", indices.getUpdateForm);
 
-// PUT /:id - Process index update
+// POST /:id - Process index update
 router.post("/:id/edit", indices.updateIndex);
 
 /// DELETE INDICES ///
-
-// GET /:id/delete - Display delete confirmation
+// GET /:id - Display delete confirmation
 router.get("/:id/delete", indices.getDeleteConfirmation);
 
 // DELETE /:id - Process index deletion
-router.delete("/:id", indices.deleteIndex);
+router.post("/:id/delete", indices.deleteIndex);
 
 module.exports = router;

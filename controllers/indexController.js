@@ -11,7 +11,11 @@ const getAllIndices = asyncHandler(async (req, res, next) => {
 const getIndexDetail = asyncHandler(async (req, res, next) => {
   const id = req.params.id;
   const index = await db.getIndexDetail(id);
-  res.render("partials/indexDetail", { index: index[0], type: type });
+  res.render("partials/indexDetail", {
+    index: index[0],
+    type: type,
+    modal: "hidden",
+  });
 });
 const getCreateForm = asyncHandler(async (req, res, next) => {
   const securities = await db.getAllSecurities();
@@ -191,10 +195,21 @@ const updateIndex = [
 ];
 
 const getDeleteConfirmation = asyncHandler(async (req, res, next) => {
-  res.send("Endpoint not available");
+  const indexId = req.params.id;
+  const index = await db.getIndexDetail(indexId);
+
+  res.render("partials/indexDetail", {
+    index: index[0],
+    type: type,
+    modal: "",
+  });
 });
+
 const deleteIndex = asyncHandler(async (req, res, next) => {
-  res.send("Endpoint not available");
+  const id = req.params.id;
+  await db.deleteIndexSecurityofIndex(id);
+  await db.deleteIndex(id);
+  res.redirect("/index");
 });
 
 module.exports = {

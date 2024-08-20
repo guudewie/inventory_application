@@ -254,6 +254,12 @@ async function deleteIndexSecurity(securityId, indexId) {
   await pool.query(query, [securityId, indexId]);
 }
 
+// USED
+async function deleteIndexSecurityofIndex(indexId) {
+  const query = `DELETE FROM security_indices WHERE indice_id = $1`;
+  await pool.query(query, [indexId]);
+}
+
 // UPDATE
 // USED
 async function updateIndex(
@@ -318,6 +324,7 @@ module.exports = {
   deleteSecurity,
   deleteSecurityType,
   deleteIndexSecurity,
+  deleteIndexSecurityofIndex,
   updateIndex,
   updateSecurity,
   updateSecurityType,
