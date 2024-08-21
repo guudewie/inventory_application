@@ -30,6 +30,20 @@ const getCreateForm = asyncHandler(async (req, res, next) => {
   });
 });
 const createIndex = [
+  body("ticker_symbol")
+    .trim()
+    .escape()
+    .isLength({ min: 1 })
+    .withMessage("Please fill in this field.")
+    .custom(async (value) => {
+      const result = await db.getIndexTicker();
+      return result.forEach((row) => {
+        if (row.ticker_symbol == value) {
+          throw new Error("Ticker is not unique");
+        }
+      });
+    })
+    .withMessage("Ticker Symbol has already been taken."),
   body("name")
     .trim()
     .escape()
@@ -40,19 +54,6 @@ const createIndex = [
     .escape()
     .isLength({ min: 1 })
     .withMessage("Please fill in this field."),
-  body("ticker_symbol")
-    .trim()
-    .escape()
-    .isLength({ min: 1 })
-    .withMessage("Please fill in this field.")
-    .custom(async (value) => {
-      const result = await db.getIndexTicker();
-      const tickerArray = result.map((ticker) => ticker.ticker_symbol);
-      if (tickerArray.includes(value)) {
-        throw new Error("Ticker is not unique");
-      }
-    })
-    .withMessage("Ticker Symbol has already been taken."),
   asyncHandler(async (req, res, next) => {
     const {
       name,
@@ -61,7 +62,8 @@ const createIndex = [
       selectedSecurities,
       securityType,
     } = req.body;
-    const securities = selectedSecurities.split(",");
+    const securities =
+      selectedSecurities == "" ? [] : selectedSecurities.split(",");
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -84,7 +86,7 @@ const createIndex = [
       ticker_symbol,
       securityType,
     );
-    console.log(newIndexId);
+
     if (securities.length) {
       await Promise.all(
         securities.map((securityId) => {

@@ -224,8 +224,9 @@ async function getSecurityTicker() {
 }
 //USED
 async function getIndexTicker() {
-  const query = `SELECT indice.ticker_symbol FROM indice`;
+  const query = `SELECT indices.ticker_symbol FROM indices`;
   const { rows } = await pool.query(query);
+  console.log(rows);
   return rows;
 }
 //USED
