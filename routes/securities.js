@@ -32,6 +32,6 @@ router.post("/:id/edit", security.updateSecurity);
 router.get("/:id/delete", security.getDeleteConfirmation);
 
 // DELETE /:id - Process security deletion
-router.delete("/:id", security.deleteSecurity);
+router.post("/:id/delete", security.deleteSecurity);
 
 module.exports = router;

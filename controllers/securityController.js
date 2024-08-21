@@ -11,7 +11,12 @@ const getAllSecurities = asyncHandler(async (req, res, next) => {
 const getSecurityDetail = asyncHandler(async (req, res, next) => {
   const id = req.params.id;
   const security = await db.getSecurityDetail(id);
-  res.render("partials/securityDetail", { security: security[0], type: type });
+  res.render("partials/securityDetail", {
+    security: security[0],
+    type: type,
+    modal: "hidden",
+    errors: {},
+  });
 });
 const getCreateForm = asyncHandler(async (req, res, next) => {
   const securityTypes = await db.getAllSecurityTypes();
@@ -134,11 +139,42 @@ const updateSecurity = [
 ];
 
 const getDeleteConfirmation = asyncHandler(async (req, res, next) => {
-  res.send("Endpoint not available");
+  const id = req.params.id;
+  const security = await db.getSecurityDetail(id);
+
+  res.render("partials/securityDetail", {
+    security: security[0],
+    type: type,
+    modal: "",
+    errors: {},
+  });
 });
-const deleteSecurity = asyncHandler(async (req, res, next) => {
-  res.send("Endpoint not available");
-});
+const deleteSecurity = [
+  body("password")
+    .custom((value) => {
+      if (value != process.env.DELETE_PASSWORD) {
+        throw new Error("Incorrect Password");
+      }
+      return true;
+    })
+    .withMessage("Incorrect Password"),
+  asyncHandler(async (req, res, next) => {
+    const id = req.params.id;
+    const security = await db.getSecurityDetail(id);
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.render("partials/securityDetail", {
+        security: security[0],
+        type: type,
+        modal: "",
+        errors: errors.mapped(),
+      });
+    }
+
+    await db.deleteSecurity(id);
+    res.redirect("/security");
+  }),
+];
 
 module.exports = {
   getAllSecurities,
