@@ -14,6 +14,9 @@ const getSecurityTypeDetail = asyncHandler(async (req, res, next) => {
   res.render("partials/securityTypeDetail", {
     securityType: securityType[0],
     type: type,
+    modal: "hidden",
+    errors: {},
+    linkedItems: [],
   });
 });
 const getCreateForm = asyncHandler(async (req, res, next) => {
@@ -114,11 +117,46 @@ const updateSecurityType = [
   }),
 ];
 const getDeleteConfirmation = asyncHandler(async (req, res, next) => {
-  res.send("Endpoint not available");
+  const id = req.params.id;
+  const securitiesType = await db.getSecurityTypeDetail(id);
+  const linkedItems = await db.getSecuritiesAndIndexWithType(id);
+
+  res.render("partials/securityTypeDetail", {
+    securityType: securitiesType[0],
+    type: type,
+    modal: "",
+    errors: {},
+    linkedItems: linkedItems,
+  });
 });
-const deleteSecurityType = asyncHandler(async (req, res, next) => {
-  res.send("Endpoint not available");
-});
+const deleteSecurityType = [
+  body("password")
+    .custom((value) => {
+      if (value != process.env.DELETE_PASSWORD) {
+        throw new Error("Incorrect Password");
+      }
+      return true;
+    })
+    .withMessage("Incorrect Password"),
+  asyncHandler(async (req, res, next) => {
+    const id = req.params.id;
+    const securitiesType = await db.getSecurityTypeDetail(id);
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      res.render("partials/securityTypeDetail", {
+        securityType: securitiesType[0],
+        type: type,
+        modal: "",
+        errors: errors.mapped(),
+        linkedItems: [],
+      });
+    }
+
+    await db.deleteSecurityType(id);
+    res.redirect("/index");
+  }),
+];
 
 module.exports = {
   getAllSecurityTypes,

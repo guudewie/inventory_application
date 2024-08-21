@@ -171,6 +171,7 @@ const deleteSecurity = [
       });
     }
 
+    await db.deleteIndexSecurityofSecurity(id);
     await db.deleteSecurity(id);
     res.redirect("/security");
   }),

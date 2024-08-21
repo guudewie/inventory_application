@@ -235,6 +235,22 @@ async function getSecurityTypeName() {
   const { rows } = await pool.query(query);
   return rows;
 }
+//USED
+async function getSecuritiesAndIndexWithType(securityTypeId) {
+  const query = `
+    SELECT indices.name, indices.id
+    FROM indices
+    WHERE indices.security_type_id = $1
+    
+    UNION ALL
+    
+    SELECT security.name, security.id
+    FROM security
+    WHERE security.security_type_id = $1
+  `;
+  const { rows } = await pool.query(query, [securityTypeId]);
+  return rows;
+}
 
 // DELETE
 async function deleteIndex(id) {
@@ -259,6 +275,12 @@ async function deleteIndexSecurity(securityId, indexId) {
 async function deleteIndexSecurityofIndex(indexId) {
   const query = `DELETE FROM security_indices WHERE indice_id = $1`;
   await pool.query(query, [indexId]);
+}
+
+// USED
+async function deleteIndexSecurityofSecurity(securityId) {
+  const query = `DELETE FROM security_indices WHERE security_id = $1`;
+  await pool.query(query, [securityId]);
 }
 
 // UPDATE
@@ -321,11 +343,13 @@ module.exports = {
   getSecurityTicker,
   getIndexTicker,
   getSecurityTypeName,
+  getSecuritiesAndIndexWithType,
   deleteIndex,
   deleteSecurity,
   deleteSecurityType,
   deleteIndexSecurity,
   deleteIndexSecurityofIndex,
+  deleteIndexSecurityofSecurity,
   updateIndex,
   updateSecurity,
   updateSecurityType,

@@ -32,6 +32,6 @@ router.post("/:id/edit", securityType.updateSecurityType);
 router.get("/:id/delete", securityType.getDeleteConfirmation);
 
 // DELETE /:id - Process security type deletion
-router.delete("/:id", securityType.deleteSecurityType);
+router.post("/:id/delete", securityType.deleteSecurityType);
 
 module.exports = router;
