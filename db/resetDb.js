@@ -3,12 +3,13 @@
 require("dotenv").config();
 const { Client } = require("pg");
 
-const SQL = "DROP TABLE indices, security, security_type, security_indices";
+const SQL =
+  "DROP TABLE IF EXISTS indices, security, security_type, security_indices";
 
 async function main() {
   console.log("seeding...");
   const client = new Client({
-    connectionString: process.env.DATABASE_LOCAL_URL,
+    connectionString: process.env.DATABASE_PUBLIC_URL,
   });
   await client.connect();
   console.log("connecting...");
