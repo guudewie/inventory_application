@@ -89,8 +89,6 @@
         selectedSecurities.value.split(",")
         .forEach(id => selectedIds.add(id));
     };
-    console.log("Set",selectedIds);
-    console.log("Input",selectedSecurities.value.split(","));
 
     selectedIds.forEach((id) => {
         const dropdownItem = document.querySelector(`a[data-value="${id}"]`)
@@ -116,10 +114,8 @@
 
         if (tagName === 'A' && !selectedIds.has(value)) {
             addSelection(value, text);
-            console.log(value, "add")
         } else if (tagName === 'A'){
             removeSelection(value)
-            console.log(value, "remove")
         }
         updateHiddenInput()
     });
@@ -157,9 +153,7 @@
             const dropdownItem = document.querySelector(`a[data-value="${value}"]`)
             dropdownItem.classList.remove("bg-gray-100")
             // remove id from id array
-            console.log("before Delete", selectedIds)
             selectedIds.delete(value)
-            console.log("after Delete", selectedIds)
         }
         updateHiddenInput();
     }

@@ -83,8 +83,6 @@ const updateSecurityType = [
       const currName = await db.getSecurityTypeDetail(req.params.id);
       if (value == currName[0].name) return true;
 
-      console.log(currName);
-
       const result = await db.getSecurityTypeName();
       return result.forEach((row) => {
         if (row.name == value) {
